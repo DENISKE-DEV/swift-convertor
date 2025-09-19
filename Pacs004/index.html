@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Convertisseur SWIFT pacs.004</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" type="image/png" href="Assets/favicon.png" />
+  <link href="Assets/style.css" rel="stylesheet" />
+</head>
+<body>
+
+	<header><span class="logo">SC</span><span class="title">SWIFT Convertor : pacs.008 ➜ pacs.004</span></header>
+
+	<div class="container">
+	
+	  <!-- Colonne gauche -->
+	  <div class="column">
+		<h2>Input message</h2>
+		<label for="input">XML pacs.008</label>
+		<textarea id="input" placeholder="Paste XML code here and then press Convert button..."></textarea>
+		<button id='convertBtn' onclick="handleConvert()">Convert</button>
+	  </div>
+
+	  <!-- Colonne droite -->
+	  <div class="column">
+		<h2>Output pacs.004</h2>
+		<div class="output-parts">
+		  <div class="textarea-wrapper">
+			<label for="output-apphdr">Application Header</label>
+			<textarea id="output-apphdr" readonly></textarea>
+			<button class="copy-button" onclick="copyToClipboard('output-apphdr')" title="Copy AppHdr">
+			  <svg class="fui-Icon-regular ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7.09 3c.2-.58.76-1 1.41-1h3c.65 0 1.2.42 1.41 1h1.59c.83 0 1.5.67 1.5 1.5v5.88a1.5 1.5 0 0 0-1-.38V4.5a.5.5 0 0 0-.5-.5h-1.59c-.2.58-.76 1-1.41 1h-3a1.5 1.5 0 0 1-1.41-1H5.5a.5.5 0 0 0-.5.5v12c0 .28.22.5.5.5h3.96l.4.47c.3.35.72.53 1.14.53H5.5A1.5 1.5 0 0 1 4 16.5v-12C4 3.67 4.67 3 5.5 3h1.59ZM8.5 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm6.99 8.64a.5.5 0 1 0-.97-.28l-2 7a.5.5 0 1 0 .97.28l2-7Zm-4.11 1.68a.5.5 0 1 0-.76-.65l-1.5 1.75a.5.5 0 0 0 0 .65l1.5 1.75a.5.5 0 1 0 .76-.65l-1.22-1.42 1.22-1.43Zm5.3 3.56a.5.5 0 0 1-.06-.71l1.22-1.42-1.22-1.43a.5.5 0 0 1 .76-.65l1.5 1.75a.5.5 0 0 1 0 .65l-1.5 1.75a.5.5 0 0 1-.7.06Z" fill="currentColor"></path></svg>
+			</button>
+		  </div>
+		  <div class="textarea-wrapper">
+			<label for="output-document">Body</label>
+			<textarea id="output-document" readonly></textarea>
+			<button class="copy-button" onclick="copyToClipboard('output-document')" title="Copy Body">
+			  <svg class="fui-Icon-regular ___12fm75w f1w7gpdv fez10in fg4l7m0" fill="currentColor" aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7.09 3c.2-.58.76-1 1.41-1h3c.65 0 1.2.42 1.41 1h1.59c.83 0 1.5.67 1.5 1.5v5.88a1.5 1.5 0 0 0-1-.38V4.5a.5.5 0 0 0-.5-.5h-1.59c-.2.58-.76 1-1.41 1h-3a1.5 1.5 0 0 1-1.41-1H5.5a.5.5 0 0 0-.5.5v12c0 .28.22.5.5.5h3.96l.4.47c.3.35.72.53 1.14.53H5.5A1.5 1.5 0 0 1 4 16.5v-12C4 3.67 4.67 3 5.5 3h1.59ZM8.5 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm6.99 8.64a.5.5 0 1 0-.97-.28l-2 7a.5.5 0 1 0 .97.28l2-7Zm-4.11 1.68a.5.5 0 1 0-.76-.65l-1.5 1.75a.5.5 0 0 0 0 .65l1.5 1.75a.5.5 0 1 0 .76-.65l-1.22-1.42 1.22-1.43Zm5.3 3.56a.5.5 0 0 1-.06-.71l1.22-1.42-1.22-1.43a.5.5 0 0 1 .76-.65l1.5 1.75a.5.5 0 0 1 0 .65l-1.5 1.75a.5.5 0 0 1-.7.06Z" fill="currentColor"></path></svg>
+			</button>
+		  </div>
+		  <div id='error'></div>
+		</div>
+	  </div>
+	</div>
+	
+	<!-- Gear icon button to open help window -->
+	<button id="openHelpBtn" onclick="openHelpWindow()" style="position:fixed; top:13px; right:30px; margin:0; background:none; border:2px solid #fff; border-radius:50%; width:35px; height:35px; font-size:22px; cursor:pointer; padding:3px 4px 4px 4px; opacity:.6;" title="Help">
+		?
+	</button>
+
+	<!-- Cross icon button to close help window -->
+	<button  id="closeHelpBtn" onclick="closeHelpWindow()" style="display:none; position:fixed; top:13px; right:30px; margin:0; background:none; border:2px solid #fff; border-radius:50%; width:35px; height:35px; font-size:26px; font-weight:normal; cursor:pointer; padding:1px 4px 4px 4px; opacity:.6;" title="Close Help">
+		&times
+	</button>
+
+	<!-- Floating iframe help window centered on the page -->
+	<iframe id="helpFrame" src="Assets/help_window.html" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:800px; height:480px; border:none; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.2); background:white; z-index:1000;"></iframe>
+
+	<!-- Libs -->
+	<script src="Assets/xml-js.min.js"></script>
+	<script src="Assets/app.js"></script>
+  
+	<script>
+		function openHelpWindow() {
+			document.getElementById('helpFrame').style.display = 'block';
+			document.getElementById('openHelpBtn').style.display = 'none';
+			document.getElementById('closeHelpBtn').style.display = 'block';
+		}
+
+		function closeHelpWindow() {
+			document.getElementById('helpFrame').style.display = 'none';
+			document.getElementById('openHelpBtn').style.display = 'block';
+			document.getElementById('closeHelpBtn').style.display = 'none';
+		}
+	</script>
+
+</body>
+</html>
